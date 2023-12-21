@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player with Subtitles</title>
+    <style>
+        #video-container {
+            position: relative;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        #subtitle-container {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            display: none; /* Initially hide subtitles */
+        }
+
+        #toggle-subtitles-btn {
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" controls>
+            <source src="movie-name.mp4" type="video/mp4">
+            <!-- Include subtitles using the track element -->
+            <track kind="subtitles" label="English" srclang="en" src="subtitle.vtt" default>
+            Your browser does not support the video tag.
+        </video>
+        <div id="subtitle-container"></div>
+    </div>
+
+    <button id="toggle-subtitles-btn" onclick="toggleSubtitles()">Toggle Subtitles</button>
+
+    <script>
+        const video = document.getElementById('video');
+        const subtitleContainer = document.getElementById('subtitle-container');
+
+        // Update subtitles during video playback
+        video.addEventListener('timeupdate', updateSubtitles);
+
+        // Function to update subtitles during video playback
+        function updateSubtitles() {
+            const currentTime = video.currentTime;
+
+            // Get the currently active cue (subtitle) from the track element
+            const activeCue = video.textTracks[0].activeCues[0];
+
+            // Display the subtitle text if there is an active cue
+            subtitleContainer.innerText = activeCue ? activeCue.text : '';
+        }
+
+        // Function to toggle subtitles visibility
+        function toggleSubtitles() {
+            // Toggle the display property of the subtitle container
+            subtitleContainer.style.display = subtitleContainer.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
